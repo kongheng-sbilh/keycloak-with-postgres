@@ -1,3 +1,5 @@
+version: '3.8'  # Update the version if necessary
+
 services:
   postgres:
     image: postgres:15
@@ -6,7 +8,10 @@ services:
       POSTGRES_USER: admin
       POSTGRES_DB: pdb
     ports:
-      - 5432:5432
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Mount a volume for PostgreSQL data
+
   keycloak:
     image: quay.io/keycloak/keycloak:20.0
     environment:
@@ -17,6 +22,12 @@ services:
       KC_DB_USERNAME: admin
       KC_DB_PASSWORD: admin
     ports:
-      - 9090:8080
+      - "9090:8080"
     command:
       - start-dev
+    volumes:
+      - keycloak_data:/opt/jboss/keycloak/standalone/data  # Mount a volume for Keycloak data
+
+volumes:
+  postgres_data:  # Define the volume for PostgreSQL data
+  keycloak_data:  # Define the volume for Keycloak data
